@@ -1,0 +1,39 @@
+{
+  "books": [
+    {
+      "bookName": "123",
+      "bookAuthor": "123",
+      "bookImage": "123",
+      "bookPrice": "123",
+      "id": 1
+    },
+    {
+      "bookName": "234",
+      "bookAuthor": "234",
+      "bookImage": "23",
+      "bookPrice": "123",
+      "id": 2
+    },
+    {
+      "bookName": "rrewwe",
+      "bookAuthor": "ewqeqe",
+      "bookImage": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTAOUNINHEzGNkxAQz39LQ9RErInsFJlHYbINH7yd0m0g&s",
+      "bookPrice": "1234567",
+      "id": 3
+    },
+    {
+      "bookName": "123",
+      "bookAuthor": "123",
+      "bookImage": "123",
+      "bookPrice": "123",
+      "id": 4
+    },
+    {
+      "bookName": "1234",
+      "bookAuthor": "1234",
+      "bookImage": "124",
+      "bookPrice": "1245",
+      "id": 5
+    }
+  ]
+}
