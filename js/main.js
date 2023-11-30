@@ -60,6 +60,20 @@ async function readBooks() {
         <h5 class="card-title">${item.bookName}</h5>
         <p class="card-text">${item.bookAuthor}</p>
         <span class="card-text">${item.bookPrice}</span>
+        <div>
+        <button class="btn btn-outline-danger btnDelete" id="${item.id}" >
+        Удалить
+        </button>
+        <button
+      class="btn btn-outline-warning btnEdit"
+      id="${item.id}"
+      data-bs-toggle="modal"
+      data-bs-target="#exampleModal"
+    >
+      Изменить
+    </button></div>
+        
+        
       </div>
     </div>
     `;
@@ -67,3 +81,57 @@ async function readBooks() {
 }
 
 readBooks();
+
+//! ====================Delete======================
+document.addEventListener("click", (e) => {
+  let del_class = [...e.target.classList];
+  if (del_class.includes("btnDelete")) {
+    let del_id = e.target.id;
+    fetch(`${API}/${del_id}`, {
+      method: "DELETE",
+    }).then(() => readBooks());
+  }
+});
+
+//! ==================EDIT=====================
+let editInpName = document.querySelector("#editInpName");
+let editInpAuthor = document.querySelector("#editInpAuthor");
+let editInpImage = document.querySelector("#editInpImage");
+let editInpPrice = document.querySelector("#editInpPrice");
+let editBtnSave = document.querySelector("#editBtnSave");
+document.addEventListener("click", (e) => {
+  let arr = [...e.target.classList];
+  if (arr.includes("btnEdit")) {
+    let id = e.target.id;
+    fetch(`${API}/${id}`)
+      .then((res) => {
+        return res.json();
+      })
+      .then((data) => {
+        editInpName.value = data.bookName;
+        editInpAuthor.value = data.bookAuthor;
+        editInpImage.value = data.bookImage;
+        editInpPrice.value = data.bookPrice;
+        editBtnSave.setAttribute("id", data.id);
+      });
+  }
+});
+
+editBtnSave.addEventListener("click", () => {
+  let editedBook = {
+    bookName: editInpName.value,
+    bookAuthor: editInpAuthor.value,
+    bookImage: editInpImage.value,
+    bookPrice: editInpPrice.value,
+  };
+  editBook(editedBook, editBtnSave.id);
+});
+function editBook(editBook, id) {
+  fetch(`${API}/${id}`, {
+    method: "PATCH",
+    headers: {
+      "Content-type": "application/json; charset=utf-8",
+    },
+    body: JSON.stringify(editBook),
+  }).then(() => readBooks());
+}
