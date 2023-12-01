@@ -6,6 +6,12 @@ let inpPrice = document.querySelector("#inpPrice");
 let btnAdd = document.querySelector("#btnAdd");
 let btnOpenForm = document.querySelector("#flush-collapseOne");
 let sectionBooks = document.querySelector("#sectionBooks");
+let currentPage = 1;
+let countPage = 1;
+let prevBtn = document.querySelector("#prevBtn");
+let nextBtn = document.querySelector("#nextBtn");
+let inpSearch = document.querySelector("#inpSearch");
+let searchValue = "";
 btnAdd.addEventListener("click", () => {
   if (
     !inpName.value.trim() ||
@@ -16,6 +22,7 @@ btnAdd.addEventListener("click", () => {
     alert("Заполните все поля!");
     return;
   }
+
   let newBook = {
     bookName: inpName.value,
     bookAuthor: inpAuthor.value,
@@ -43,12 +50,13 @@ function createBooks(book) {
 }
 //! =====================READ=======================
 async function readBooks() {
-  const response = await fetch(API);
+  const response = await fetch(`${API}?&_page=${currentPage}&_limit=3`);
   const data = await response.json();
   sectionBooks.innerHTML = "";
+  console.log(data);
   data.forEach((item) => {
     sectionBooks.innerHTML += `
-    <div class="card m-4 cardBook" style="width: 18rem">
+    <div class="card m-4 cardBook" style="width:  ">
       <img
         id="${item.id}"
         src="${item.bookImage}"
@@ -78,6 +86,7 @@ async function readBooks() {
     </div>
     `;
   });
+  pageFunc();
 }
 
 readBooks();
@@ -135,3 +144,27 @@ function editBook(editBook, id) {
     body: JSON.stringify(editBook),
   }).then(() => readBooks());
 }
+
+//! ==================PAGINATION==================
+function pageFunc() {
+  fetch(API)
+    .then((res) => {
+      return res.json();
+    })
+    .then((data) => {
+      countPage = Math.ceil(data.length / 3);
+    });
+}
+
+prevBtn.addEventListener("click", () => {
+  if (currentPage <= 1) return;
+  currentPage--;
+  readBooks();
+});
+nextBtn.addEventListener("click", () => {
+  if (currentPage >= countPage) return;
+  currentPage++;
+  readBooks();
+});
+
+//! =================SEARCH====================
